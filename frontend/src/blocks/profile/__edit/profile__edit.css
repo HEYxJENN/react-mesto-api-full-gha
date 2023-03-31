@@ -1,0 +1,22 @@
+.profile__edit {
+  grid-area: edit;
+  margin: auto;
+  margin-left: 18px;
+  padding-top: 22px;
+  max-width: 24px;
+  max-height: 24px;
+
+  cursor: pointer;
+}
+
+.profile__edit:hover {
+  opacity: 0.6;
+  transition: 1s ease-in;
+}
+
+@media screen and (max-width: 1023px) {
+  .profile__edit {
+    margin-left: 10px;
+    max-width: 18px;
+  }
+}

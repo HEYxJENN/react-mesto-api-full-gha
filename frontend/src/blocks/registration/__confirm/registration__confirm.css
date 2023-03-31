@@ -1,0 +1,12 @@
+.registration__confirm {
+    margin: 216px auto 0px;
+    text-align: center;
+    width: 358px;
+    height: 50px;
+    background-color: aliceblue;
+}
+
+.registration__confirm:hover {
+opacity: 0.85;
+cursor: pointer;
+}

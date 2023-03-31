@@ -1,0 +1,25 @@
+.profile__caption {
+  grid-area: caption;
+  color: white;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 16px 0px 0px 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 336px;
+}
+
+@media screen and (max-width: 1023px) {
+  .profile__caption {
+    text-align: center;
+    align-self: center;
+    max-width: 88.125%;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 10px;
+  }
+}

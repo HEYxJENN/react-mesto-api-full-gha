@@ -1,0 +1,21 @@
+.profile__image {
+  grid-area: avatar;
+  color: white;
+  margin: auto;
+  width:120px;
+  height: 120px;
+  border-radius: 100px;
+  margin-left: 0px;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/*этот запрос меняет марджин с 0 на авто и выравнивает аватар по центру, у меня профиль сделан через грид, в ктором при десктопном разрешении надо прижимать аватар, а не выравнивать*/
+@media screen and (max-width: 1023px) {
+  .profile__image {
+    margin-left: auto;
+  }
+}
+.profile__image:hover {
+  opacity: 0.5;
+}

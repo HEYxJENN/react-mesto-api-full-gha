@@ -1,0 +1,16 @@
+.popup__content-verysmall {
+        position: relative;
+        width: 430px;
+        min-height: 181px;
+        background: #ffffff;
+        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+      }
+      
+      @media screen and (max-width: 767px) {
+        .popup__content-verysmall {
+          width: 282px;
+          min-height: 181px;
+        }
+      }
+      

@@ -1,0 +1,19 @@
+.registration__input {
+    border: none;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    background-color: #000000;
+    min-width: 358px;
+    min-height: 27px;
+    border-bottom: 1px solid #CCCCCC;
+    margin-top: 54px;
+    padding: 0px;
+    text-decoration-color: #CCCCCC;
+    color: #CCCCCC;
+  }
+
+  ::placeholder {
+   color: #CCCCCC;
+  }

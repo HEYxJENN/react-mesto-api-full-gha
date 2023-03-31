@@ -1,0 +1,21 @@
+.profile {
+  display: grid;
+  grid-template-areas:
+    "avatar name  add"
+    "avatar caption  add";
+  margin: auto;
+  margin-top: 40px;
+  max-width: 70%;
+  min-height: 120px;
+  grid-auto-columns: 150px auto 150px;
+  grid-auto-rows: 60px 60px;
+}
+
+@media screen and (max-width: 1023px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    max-width: 88.125%;
+    margin-top: 42px;
+  }
+}

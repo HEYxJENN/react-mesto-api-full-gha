@@ -1,0 +1,25 @@
+.page {
+  position: relative;
+  margin: 0px auto;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  max-width: 1280px;
+  /*я не понимаю на какие разрешения мне ориентироваться при проверке. С панелью инструментов и респонсивом показываются другие значения, нежели без них */
+}
+
+@media screen and (max-width: 1024px) {
+  .page {
+    max-width: 1024px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .page {
+    max-width: 768px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .page {
+    max-width: 320px;
+  }
+}

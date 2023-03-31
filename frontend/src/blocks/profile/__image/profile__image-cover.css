@@ -1,0 +1,11 @@
+.profile__image-cover {
+  background-repeat: no-repeat;
+  background-position: center;
+    margin: auto;
+    background-image: url(../../../images/VectorPen.svg);
+    z-index: 0;
+}
+
+.profile__image-cover:hover { 
+    opacity:1;
+} 
