@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
+//не забыть убрать краш
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("Сервер сейчас упадёт");

@@ -5,6 +5,10 @@ class Api extends React.Component {
     super(props);
     this._address = props.baseUrl;
     this._headers = props.headers;
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      this._headers.authorization = `Bearer ${jwt.replace(/["]/g, "")}`;
+    }
   }
 
   _getRes(res) {
@@ -77,7 +81,7 @@ class Api extends React.Component {
 const ApiX = new Api({
   baseUrl: "http://localhost:3001",
   headers: {
-    authorization: `Bearer ${localStorage.getItem("jwt").replace(/["]/g, "")}`,
+    // authorization: `Bearer ${localStorage.getItem("jwt").replace(/["]/g, "")}`,
     "Content-Type": "application/json",
   },
 });
