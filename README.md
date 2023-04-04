@@ -8,8 +8,8 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.77.208
+IP-адрес 158.160.57.129
 
 Frontend https://ohheyfront.nomoredomains.work
 
-Backend https://ohheyback.nomoredomains.work
+Backend https://ohheyfront.nomoredomains.work/api

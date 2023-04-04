@@ -24,9 +24,6 @@ class Auth extends React.Component {
   }
 
   login(password, email) {
-    console.log(email);
-    console.log(password);
-    console.log(this._address);
     return fetch(`${this._address}/signin`, {
       method: "POST",
       credentials: "include",
@@ -46,7 +43,6 @@ class Auth extends React.Component {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
-        // `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzcyNjE1NGQ0NTY3YzAwMTMxZTMyNTgiLCJpYXQiOjE2Njg0NDE3MjJ9.CP33r0bR6kpY2WHnYJBc4tfzsmYi2ANoscrGo1aNhO4`,
       },
     }).then(this._getRes);
   }

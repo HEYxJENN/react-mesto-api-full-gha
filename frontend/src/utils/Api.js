@@ -35,7 +35,6 @@ class Api extends React.Component {
   }
 
   getInitialCards() {
-    console.log(this._headers);
     return fetch(`${this._address}/cards`, {
       method: "GET",
       credentials: "include",
@@ -86,10 +85,8 @@ class Api extends React.Component {
 }
 
 const ApiX = new Api({
-  // baseUrl: "http://localhost:3001",
   baseUrl: "http://ohheyfront.nomoredomains.work/api",
   headers: {
-    // authorization: `Bearer ${localStorage.getItem("jwt").replace(/["]/g, "")}`,
     "Content-Type": "application/json",
   },
 });

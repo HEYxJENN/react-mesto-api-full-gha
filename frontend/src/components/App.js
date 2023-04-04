@@ -31,7 +31,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [isToolOpened, setToolOpened] = useState(false);
   const [success, setSuccess] = useState("../images/Approved.png");
@@ -43,11 +43,14 @@ function App() {
     console.log(jwt);
     if (jwt) {
       jwt = jwt.replace(/["]/g, "");
-
       AuthX.checkToken(jwt).then((res) => {
         if (res) {
-          setEmail(res.data.email);
-          setLoggedIn(true);
+          setTimeout(() => {
+            setEmail(res.data.email);
+            setLoggedIn(true);
+            history.push("/");
+            setToolOpened(false);
+          }, 1000);
         }
       });
     }
@@ -119,7 +122,6 @@ function App() {
 
   //после того как ставится лайк - овнер меняется с объекта на айдишку, не понимаю почему
   function handleCardLike(card) {
-    console.log(card);
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
     ApiX.changeLikeStatus(card._id, !isLiked)
       .then(console.log(card._id))
@@ -150,22 +152,20 @@ function App() {
   function handleLogIn({ password, email }) {
     AuthX.login(password, email)
       .then((res) => {
-        console.log(res.token);
         localStorage.setItem("jwt", JSON.stringify(res.token));
-        console.log();
+        console.log(localStorage.getItem("jwt"));
         setEmail(email);
-        // const jwt = localStorage.getItem("jwt");
       })
-      // .then(() => {
-      //   setSuccess(true);
-      //   setToolOpened(true);
-      // })
       .then(() => {
-        // setTimeout(() => {
-        setLoggedIn(true);
-        history.push("/");
-        //   setToolOpened(false);
-        // }, 1000);
+        setSuccess(true);
+        setToolOpened(true);
+      })
+      .then(() => {
+        setTimeout(() => {
+          setLoggedIn(true);
+          history.push("/");
+          setToolOpened(false);
+        }, 1000);
       })
       .catch((err) => {
         console.log(err);
@@ -181,7 +181,6 @@ function App() {
       })
       .then(() => {
         setTimeout(() => {
-          // setLoggedIn(true);
           history.push("/login");
           setToolOpened(false);
         }, 5000);
