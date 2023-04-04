@@ -86,7 +86,8 @@ class Api extends React.Component {
 }
 
 const ApiX = new Api({
-  baseUrl: "http://localhost:3001",
+  // baseUrl: "http://localhost:3001",
+  baseUrl: "http://ohheyfront.nomoredomains.work/api",
   headers: {
     // authorization: `Bearer ${localStorage.getItem("jwt").replace(/["]/g, "")}`,
     "Content-Type": "application/json",
