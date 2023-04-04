@@ -12,13 +12,14 @@ const errorHandler = require("./middlewars/errorHandler");
 const NotFound = require("./errors/NotFound");
 const { URLregex } = require("./constants/constants");
 const { requestLogger, errorLogger } = require("./middlewars/logger");
+const corsOptions = require("./constants/corsconfig");
 
 const { PORT = 3001 } = process.env;
 
 const app = express();
 mongoose.connect("mongodb://localhost:27017/mestodb", {});
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
