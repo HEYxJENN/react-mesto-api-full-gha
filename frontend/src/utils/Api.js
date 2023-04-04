@@ -18,12 +18,14 @@ class Api extends React.Component {
   getUser() {
     return fetch(`${this._address}/users/me`, {
       headers: this._headers,
+      credentials: "include",
     }).then(this._getRes);
   }
 
   setUser({ name, about }) {
     return fetch(`${this._address}/users/me`, {
       method: "PATCH",
+      credentials: "include",
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -36,6 +38,7 @@ class Api extends React.Component {
     console.log(this._headers);
     return fetch(`${this._address}/cards`, {
       method: "GET",
+      credentials: "include",
       headers: this._headers,
     })
       .then(console.log(this._headers))
@@ -45,6 +48,7 @@ class Api extends React.Component {
   setUserAvatar({ avatar }) {
     return fetch(`${this._address}/users/me/avatar`, {
       method: "PATCH",
+      credentials: "include",
       headers: this._headers,
       body: JSON.stringify({
         avatar,
@@ -55,6 +59,7 @@ class Api extends React.Component {
   addCard({ name, link }) {
     return fetch(`${this._address}/cards`, {
       method: "POST",
+      credentials: "include",
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -66,6 +71,7 @@ class Api extends React.Component {
   changeLikeStatus(cardID, liked) {
     return fetch(`${this._address}/cards/${cardID}/likes`, {
       method: liked ? "PUT" : "DELETE",
+      credentials: "include",
       headers: this._headers,
     }).then(this._getRes);
   }
@@ -73,6 +79,7 @@ class Api extends React.Component {
   removeCard(cardID) {
     return fetch(`${this._address}/cards/${cardID}`, {
       method: "DELETE",
+      credentials: "include",
       headers: this._headers,
     }).then(this._getRes);
   }

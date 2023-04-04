@@ -15,6 +15,7 @@ class Auth extends React.Component {
     return fetch(`${this._address}/signup`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         password,
         email,
@@ -28,6 +29,7 @@ class Auth extends React.Component {
     console.log(this._address);
     return fetch(`${this._address}/signin`, {
       method: "POST",
+      credentials: "include",
       headers: this._headers,
       body: JSON.stringify({
         password,
@@ -40,6 +42,7 @@ class Auth extends React.Component {
     console.log(jwt);
     return fetch(`${this._address}/users/me`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
