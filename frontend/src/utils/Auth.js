@@ -50,7 +50,7 @@ class Auth extends React.Component {
 
 const AuthX = new Auth({
   // baseUrl: "http://localhost:3001",
-  baseUrl: "http://ohheyfront.nomoredomains.work/api",
+  baseUrl: "https://ohheyfront.nomoredomains.work/api",
   headers: { "Content-Type": "application/json" },
 
   // headers: {

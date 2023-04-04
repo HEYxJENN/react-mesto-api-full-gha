@@ -85,7 +85,7 @@ class Api extends React.Component {
 }
 
 const ApiX = new Api({
-  baseUrl: "http://ohheyfront.nomoredomains.work/api",
+  baseUrl: "https://ohheyfront.nomoredomains.work/api",
   headers: {
     "Content-Type": "application/json",
   },
