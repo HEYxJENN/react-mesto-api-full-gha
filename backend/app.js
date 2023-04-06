@@ -15,7 +15,7 @@ const { requestLogger, errorLogger } = require('./middlewars/logger');
 const corsOptions = require('./constants/corsconfig');
 // require('dotenv').config();
 
-const { PORT = 3001 } = process.env;
+const { PORT } = process.env;
 
 const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb', {});
@@ -26,11 +26,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 // не забыть убрать краш
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('Сервер сейчас упадёт');
+//   }, 0);
+// });
 app.post(
   '/signin',
   celebrate({
