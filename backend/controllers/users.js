@@ -6,15 +6,22 @@ const ValidationError = require('../errors/ValidationError');
 const NotFound = require('../errors/NotFound');
 const Conflict = require('../errors/Conflict');
 const { CREATED } = require('../constants/constants');
+// const secret = process.env.SECRET_KEY;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return Users.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', {
-        expiresIn: '7d',
-      });
+      const token = jwt.sign(
+        { _id: user._id },
+        // "super-strong-secret"
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        {
+          expiresIn: '7d',
+        }
+      );
 
       // res.cookie(
       //   'secureCookie',
@@ -48,8 +55,8 @@ module.exports.getMe = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch(() => {
-      next();
+    .catch((err) => {
+      next(err);
     });
 };
 

@@ -45,9 +45,9 @@ function App() {
       jwt = jwt.replace(/["]/g, "");
       AuthX.checkToken(jwt).then((res) => {
         if (res) {
+          setLoggedIn(true);
           setTimeout(() => {
             setEmail(res.data.email);
-            setLoggedIn(true);
             history.push("/");
             setToolOpened(false);
           }, 1000);
