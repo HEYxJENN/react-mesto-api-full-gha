@@ -1,26 +1,21 @@
-const Cards = require("../models/card");
-const NotFound = require("../errors/NotFound");
-const ForbidddenError = require("../errors/ForbiddenError");
-const ValidationError = require("../errors/ValidationError");
+const Cards = require('../models/card');
+const NotFound = require('../errors/NotFound');
+const ForbidddenError = require('../errors/ForbiddenError');
+const ValidationError = require('../errors/ValidationError');
 const {
   OK,
   BAD_REQUEST_ERROR,
   BAD_REQUEST_MESSAGE,
-} = require("../constants/constants");
+} = require('../constants/constants');
 
 // Get получаем все карты
 
 module.exports.getCards = (req, res, next) => {
   Cards.find({})
-    .populate("owner")
-    .populate("likes")
+    .populate('owner')
+    .populate('likes')
     .then((cards) => res.status(OK).send({ data: cards }))
-    .catch(
-      (err) => next(err)
-      // res
-      //   .status(INTERNAL_SERVER_ERROR)
-      //   .send({ message: INTERNAL_SERVER_MESSAGE })
-    );
+    .catch((err) => next(err));
 };
 
 // Post создание карточки
@@ -29,16 +24,13 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const ownerId = req.user._id;
   Cards.create({ name, link, owner: ownerId })
-    .populate("owner")
-    .populate("likes")
+    .populate('owner')
+    .populate('likes')
     .then((card) => res.status(OK).send({ data: card }))
     .catch((err) => {
-      if (err.name === "ValidationError")
+      if (err.name === 'ValidationError')
         res.status(BAD_REQUEST_ERROR).send({ message: BAD_REQUEST_MESSAGE });
       else {
-        // res.status(INTERNAL_SERVER_ERROR).send({
-        //   message: INTERNAL_SERVER_MESSAGE,
-        // });
         next(err);
       }
     });
@@ -47,19 +39,18 @@ module.exports.createCard = (req, res, next) => {
 // Delete удаление
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    console.log(req);
     const card = await Cards.findById(req.params.cardId);
     if (!card) {
-      throw new NotFound("Card не найден");
+      throw new NotFound('Card не найден');
     }
     if (card.owner.toString() !== req.user._id) {
-      throw new ForbidddenError("Нет Доступа");
+      throw new ForbidddenError('Нет Доступа');
     }
     await Cards.findByIdAndDelete(req.params.cardId);
     res.status(OK).send({ data: card });
   } catch (err) {
-    if (err.name === "CastError") {
-      next(new ValidationError("Невалидный id"));
+    if (err.name === 'CastError') {
+      next(new ValidationError('Невалидный id'));
     } else {
       next(err);
     }
@@ -74,14 +65,13 @@ module.exports.likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
-    .populate("owner")
-    .populate("likes")
-    .orFail(new NotFound("Карточка не найдена"))
-    .then(console.log(res))
+    .populate('owner')
+    .populate('likes')
+    .orFail(new NotFound('Карточка не найдена'))
     .then((card) => res.status(OK).send({ data: card }))
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new ValidationError("Невалидный id"));
+      if (err.name === 'CastError') {
+        next(new ValidationError('Невалидный id'));
       } else {
         next(err);
       }
@@ -94,13 +84,13 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true }
   )
-    .populate("owner")
-    .populate("likes")
-    .orFail(new NotFound("Пользователь не найден"))
+    .populate('owner')
+    .populate('likes')
+    .orFail(new NotFound('Пользователь не найден'))
     .then((card) => res.status(OK).send({ data: card }))
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new ValidationError("Невалидный id"));
+      if (err.name === 'CastError') {
+        next(new ValidationError('Невалидный id'));
       } else {
         next(err);
       }

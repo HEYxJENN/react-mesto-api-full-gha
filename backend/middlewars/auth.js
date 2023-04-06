@@ -4,11 +4,10 @@
 // так же на будущее для себя хотел бы оставить закомментированный код, как пример best practice
 const jwt = require('jsonwebtoken');
 const Unauthorized = require('../errors/Unauthorized');
-// const secret = process.env.SECRET_KEY;
-const { NODE_ENV, JWT_SECRET } = process.env;
+
+// const { NODE_ENV, JWT_SECRET } = process.env;
 
 const handleAuthError = (res, next) => {
-  console.log('handleAuthErr');
   next(new Unauthorized('Требуется авторизация'));
 };
 
@@ -16,7 +15,6 @@ const extractBearerToken = (header) => header.replace('Bearer ', '');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  console.log('TTTToken', authorization);
   // кука из реквеста
 
   // console.log(req.cookies);
@@ -44,8 +42,8 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(
       token,
-      // "super-strong-secret"
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
+      'super-strong-secret'
+      // NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
     );
     // payload = jwt.verify(secureCookie, 'super-strong-secret');
   } catch (err) {

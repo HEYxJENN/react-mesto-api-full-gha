@@ -13,14 +13,7 @@ import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute";
 import { useState } from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  NavLink,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import InfoTool from "./InfoTooltip";
 

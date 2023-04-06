@@ -6,8 +6,8 @@ const ValidationError = require('../errors/ValidationError');
 const NotFound = require('../errors/NotFound');
 const Conflict = require('../errors/Conflict');
 const { CREATED } = require('../constants/constants');
-// const secret = process.env.SECRET_KEY;
-const { NODE_ENV, JWT_SECRET } = process.env;
+
+// const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -16,8 +16,8 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        // "super-strong-secret"
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        'super-strong-secret',
+        // NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
         {
           expiresIn: '7d',
         }
