@@ -13,7 +13,7 @@ const NotFound = require('./errors/NotFound');
 const { URLregex } = require('./constants/constants');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const corsOptions = require('./constants/corsconfig');
-require('dotenv').config();
+// require('dotenv').config();
 
 const { PORT = 3001 } = process.env;
 

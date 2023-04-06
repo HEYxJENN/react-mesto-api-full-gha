@@ -17,7 +17,6 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   // кука из реквеста
 
-  // console.log(req.cookies);
   // const { secureCookie } = req.cookies;
 
   // if (!secureCookie) {
