@@ -148,6 +148,8 @@ function App() {
         localStorage.setItem("jwt", JSON.stringify(res.token));
         console.log(localStorage.getItem("jwt"));
         setEmail(email);
+        setLoggedIn(true);
+        history.push("/");
       })
       .then(() => {
         setSuccess(true);
@@ -155,8 +157,8 @@ function App() {
       })
       .then(() => {
         setTimeout(() => {
-          setLoggedIn(true);
-          history.push("/");
+          // setLoggedIn(true);
+          // history.push("/");
           setToolOpened(false);
         }, 1000);
       })
@@ -174,7 +176,7 @@ function App() {
       })
       .then(() => {
         setTimeout(() => {
-          history.push("/login");
+          history.push("/auth");
           setToolOpened(false);
         }, 5000);
       })
