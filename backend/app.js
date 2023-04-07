@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -13,7 +14,6 @@ const NotFound = require('./errors/NotFound');
 const { URLregex } = require('./constants/constants');
 const { requestLogger, errorLogger } = require('./middlewars/logger');
 const corsOptions = require('./constants/corsconfig');
-require('dotenv').config();
 
 const { PORT = 3001 } = process.env;
 

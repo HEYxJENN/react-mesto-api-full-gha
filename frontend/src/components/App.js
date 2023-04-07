@@ -149,11 +149,13 @@ function App() {
         console.log(localStorage.getItem("jwt"));
         setEmail(email);
         setLoggedIn(true);
-        history.push("/");
       })
       .then(() => {
         setSuccess(true);
         setToolOpened(true);
+      })
+      .then(() => {
+        history.push("/");
       })
       .then(() => {
         setTimeout(() => {
@@ -168,6 +170,23 @@ function App() {
         setToolOpened(true);
       });
   }
+
+  // async function handleLogIn({ password, email }) {
+  //   try {
+  //     const res = await AuthX.login(password, email);
+  //     localStorage.setItem("jwt", JSON.stringify(res.token));
+  //     setEmail(email);
+  //     setLoggedIn(true);
+  //     history.push("/");
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     setSuccess(true);
+  //     setToolOpened(true);
+  //   } catch (err) {
+  //     console.log(err);
+  //     setSuccess(false);
+  //     setToolOpened(true);
+  //   }
+  // }
 
   function handleRegister({ password, email }) {
     AuthX.register(password, email)
