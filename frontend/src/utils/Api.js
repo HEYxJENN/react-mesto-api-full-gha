@@ -15,9 +15,9 @@ class Api extends React.Component {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  getUser() {
+  getUser(head) {
     return fetch(`${this._address}/users/me`, {
-      headers: this._headers,
+      headers: head,
       credentials: "include",
     }).then(this._getRes);
   }
@@ -34,11 +34,11 @@ class Api extends React.Component {
     }).then(this._getRes);
   }
 
-  getInitialCards() {
+  getInitialCards(head) {
     return fetch(`${this._address}/cards`, {
       method: "GET",
       credentials: "include",
-      headers: this._headers,
+      headers: head,
     })
       .then(console.log(this._headers))
       .then(this._getRes);
