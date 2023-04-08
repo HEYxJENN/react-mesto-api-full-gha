@@ -31,7 +31,7 @@ function App() {
 
   const history = useHistory();
 
-  React.useEffect(() => {
+  function checkToken() {
     let jwt = localStorage.getItem("jwt");
     console.log(jwt);
     if (jwt) {
@@ -47,6 +47,10 @@ function App() {
         }
       });
     }
+  }
+
+  React.useEffect(() => {
+    checkToken();
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -103,14 +107,26 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  function getInfo() {
+    let jwt = localStorage.getItem("jwt");
+    console.log(jwt);
+    if (jwt) {
+      jwt = jwt.replace(/["]/g, "");
+      AuthX.checkToken(jwt).then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          setTimeout(() => {
+            setEmail(res.data.email);
+            history.push("/");
+            setToolOpened(false);
+          }, 1000);
+        }
+      });
+    }
+  }
+
   React.useEffect(() => {
-    Promise.all([ApiX.getInitialCards(), ApiX.getUser()])
-      .then(([itemsApi, userData]) => {
-        setCurrentUser(userData.data);
-        setCards(itemsApi.data);
-      })
-      .then(closeAllPopups)
-      .catch((err) => console.log(err));
+    getInfo();
   }, []);
 
   //после того как ставится лайк - овнер меняется с объекта на айдишку, не понимаю почему
@@ -142,56 +158,45 @@ function App() {
     history.push("/auth");
   }
 
-  // function handleLogIn({ password, email }) {
-  //   AuthX.login(password, email)
-  //     .then((res) => {
-  //       localStorage.setItem("jwt", JSON.stringify(res.token));
-  //       console.log(localStorage.getItem("jwt"));
-  //       setEmail(email);
-  //       setLoggedIn(true);
-  //     })
-  //     .then(() => {
-  //       setSuccess(true);
-  //       setToolOpened(true);
-  //     })
-  //     .then(() => {
-  //       history.push("/");
-  //     })
-  //     .then(() => {
-  //       setTimeout(() => {
-  //         // setLoggedIn(true);
-  //         // history.push("/");
-  //         setToolOpened(false);
-  //       }, 1000);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setSuccess(false);
-  //       setToolOpened(true);
-  //     });
-  // }
+  function handleLogIn({ password, email }) {
+    AuthX.login(password, email)
+      .then((res) => {
+        localStorage.setItem("jwt", JSON.stringify(res.token));
+        console.log(localStorage.getItem("jwt"));
+        setEmail(email);
+        setLoggedIn(true);
+      })
+      .then(checkToken())
+      .then(getInfo())
+      // .then(()=>{
+      //  let jwt = localStorage.getItem("jwt");
 
-  async function handleLogIn({ password, email }) {
-    try {
-      const res = await AuthX.login(password, email);
-      localStorage.setItem("jwt", JSON.stringify(res.token));
-      setEmail(email);
-      setLoggedIn(true);
-      await Promise.all([ApiX.getInitialCards(), ApiX.getUser()]).then(
-        ([itemsApi, userData]) => {
-          setCurrentUser(userData.data);
-          setCards(itemsApi.data);
-        }
-      );
-      history.push("/");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSuccess(true);
-      setToolOpened(true);
-    } catch (err) {
-      console.log(err);
-      setSuccess(false);
-      setToolOpened(true);
-    }
+      // })
+      // .then(() => {
+      //   setSuccess(true);
+      //   setToolOpened(true);
+      // })
+      // .then(
+      //   Promise.all([ApiX.getInitialCards(), ApiX.getUser()]).then(
+      //     ([itemsApi, userData]) => {
+      //       setCurrentUser(userData.data);
+      //       setCards(itemsApi.data);
+      //     }
+      //   )
+      // )
+      // .then(() => {
+      //   setTimeout(() => {
+      //     setToolOpened(false);
+      //   }, 1000);
+      // })
+      // .then(() => {
+      //   history.push("/");
+      // })
+      .catch((err) => {
+        console.log(err);
+        setSuccess(false);
+        setToolOpened(true);
+      });
   }
 
   function handleRegister({ password, email }) {
