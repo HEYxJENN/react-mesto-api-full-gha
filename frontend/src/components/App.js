@@ -31,7 +31,7 @@ function App() {
 
   const history = useHistory();
 
-  function checkToken() {
+  React.useEffect(() => {
     let jwt = localStorage.getItem("jwt");
     console.log(jwt);
     if (jwt) {
@@ -47,10 +47,6 @@ function App() {
         }
       });
     }
-  }
-
-  React.useEffect(() => {
-    checkToken();
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -107,26 +103,14 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  function getInfo() {
-    let jwt = localStorage.getItem("jwt");
-    console.log(jwt);
-    if (jwt) {
-      jwt = jwt.replace(/["]/g, "");
-      AuthX.checkToken(jwt).then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          setTimeout(() => {
-            setEmail(res.data.email);
-            history.push("/");
-            setToolOpened(false);
-          }, 1000);
-        }
-      });
-    }
-  }
-
   React.useEffect(() => {
-    getInfo();
+    Promise.all([ApiX.getInitialCards(), ApiX.getUser()])
+      .then(([itemsApi, userData]) => {
+        setCurrentUser(userData.data);
+        setCards(itemsApi.data);
+      })
+      .then(closeAllPopups)
+      .catch((err) => console.log(err));
   }, []);
 
   //после того как ставится лайк - овнер меняется с объекта на айдишку, не понимаю почему
@@ -158,45 +142,42 @@ function App() {
     history.push("/auth");
   }
 
-  function handleLogIn({ password, email }) {
-    AuthX.login(password, email)
-      .then((res) => {
-        localStorage.setItem("jwt", JSON.stringify(res.token));
-        console.log(localStorage.getItem("jwt"));
-        setEmail(email);
-        setLoggedIn(true);
-      })
-      .then(checkToken())
-      .then(getInfo())
-      // .then(()=>{
-      //  let jwt = localStorage.getItem("jwt");
-
-      // })
-      // .then(() => {
-      //   setSuccess(true);
-      //   setToolOpened(true);
-      // })
-      // .then(
-      //   Promise.all([ApiX.getInitialCards(), ApiX.getUser()]).then(
-      //     ([itemsApi, userData]) => {
-      //       setCurrentUser(userData.data);
-      //       setCards(itemsApi.data);
-      //     }
-      //   )
-      // )
-      // .then(() => {
-      //   setTimeout(() => {
-      //     setToolOpened(false);
-      //   }, 1000);
-      // })
-      // .then(() => {
-      //   history.push("/");
-      // })
-      .catch((err) => {
-        console.log(err);
-        setSuccess(false);
-        setToolOpened(true);
-      });
+  //я понимаю, что это не самый изящный вариант, но у меня не получилось передать хэдер авторизэйшн отсюда.
+  //я знаю как сделать, но для этого нужно переписать довольно много логики
+  async function handleLogIn({ password, email }) {
+    try {
+      const res = await AuthX.login(password, email);
+      localStorage.setItem("jwt", JSON.stringify(res.token));
+      setEmail(email);
+      setLoggedIn(true);
+      // const jwt = localStorage.getItem("jwt");
+      // ApiX.getInitialCards({ authorization: `Bearer ${jwt}` }).then(
+      //   (itemsApi) => {
+      //     console.log(itemsApi);
+      //     setCards(itemsApi.data);
+      //   }
+      // );
+      // ApiX.getUser({
+      //   headers: {
+      //     authorization: `Bearer ${jwt}`,
+      //   },
+      // }).then((userApi) => {
+      //   console.log(userApi);
+      //   setCurrentUser(userApi.data);
+      // });
+      setSuccess(true);
+      setToolOpened(true);
+      setTimeout(() => {
+        setToolOpened(false);
+      }, 1000);
+      history.push("/");
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } catch (err) {
+      console.log(err);
+      setSuccess(false);
+      setToolOpened(true);
+    }
   }
 
   function handleRegister({ password, email }) {
