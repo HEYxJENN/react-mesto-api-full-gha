@@ -151,8 +151,6 @@ function App() {
     history.push("/auth");
   }
 
-  //я понимаю, что это не самый изящный вариант, но у меня не получилось передать хэдер авторизэйшн отсюда.
-  //я знаю как сделать, но для этого нужно переписать довольно много логики
   async function handleLogIn({ password, email }) {
     try {
       const res = await AuthX.login(password, email);
