@@ -104,7 +104,16 @@ function App() {
   };
 
   React.useEffect(() => {
-    Promise.all([ApiX.getInitialCards(), ApiX.getUser()])
+    let jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      jwt = `Bearer ${jwt.replace(/["]/g, "")}`;
+    }
+    let head = {
+      authorization: jwt,
+      "Content-Type": "application/json",
+    };
+
+    Promise.all([ApiX.getInitialCards(head), ApiX.getUser(head)])
       .then(([itemsApi, userData]) => {
         setCurrentUser(userData.data);
         setCards(itemsApi.data);
@@ -150,29 +159,33 @@ function App() {
       localStorage.setItem("jwt", JSON.stringify(res.token));
       setEmail(email);
       setLoggedIn(true);
-      // const jwt = localStorage.getItem("jwt");
-      // ApiX.getInitialCards({ authorization: `Bearer ${jwt}` }).then(
-      //   (itemsApi) => {
-      //     console.log(itemsApi);
-      //     setCards(itemsApi.data);
-      //   }
-      // );
-      // ApiX.getUser({
-      //   headers: {
-      //     authorization: `Bearer ${jwt}`,
-      //   },
-      // }).then((userApi) => {
-      //   console.log(userApi);
-      //   setCurrentUser(userApi.data);
-      // });
+
+      let jwt = localStorage.getItem("jwt");
+      if (jwt) {
+        jwt = `Bearer ${jwt.replace(/["]/g, "")}`;
+      }
+      let head = {
+        authorization: jwt,
+        "Content-Type": "application/json",
+      };
+
+      ApiX.getInitialCards(head).then((itemsApi) => {
+        console.log(itemsApi);
+        setCards(itemsApi.data);
+      });
+      ApiX.getUser(head).then((userApi) => {
+        console.log(userApi);
+        setCurrentUser(userApi.data);
+      });
+
       setSuccess(true);
       setToolOpened(true);
       setTimeout(() => {
         setToolOpened(false);
       }, 1000);
-      history.push("/");
       // eslint-disable-next-line no-restricted-globals
-      location.reload();
+      // location.reload();
+      history.push("/");
     } catch (err) {
       console.log(err);
       setSuccess(false);
