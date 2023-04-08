@@ -142,51 +142,57 @@ function App() {
     history.push("/auth");
   }
 
-  function handleLogIn({ password, email }) {
-    AuthX.login(password, email)
-      .then((res) => {
-        localStorage.setItem("jwt", JSON.stringify(res.token));
-        console.log(localStorage.getItem("jwt"));
-        setEmail(email);
-        setLoggedIn(true);
-      })
-      .then(() => {
-        setSuccess(true);
-        setToolOpened(true);
-      })
-      .then(() => {
-        history.push("/");
-      })
-      .then(() => {
-        setTimeout(() => {
-          // setLoggedIn(true);
-          // history.push("/");
-          setToolOpened(false);
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setSuccess(false);
-        setToolOpened(true);
-      });
-  }
-
-  // async function handleLogIn({ password, email }) {
-  //   try {
-  //     const res = await AuthX.login(password, email);
-  //     localStorage.setItem("jwt", JSON.stringify(res.token));
-  //     setEmail(email);
-  //     setLoggedIn(true);
-  //     history.push("/");
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-  //     setSuccess(true);
-  //     setToolOpened(true);
-  //   } catch (err) {
-  //     console.log(err);
-  //     setSuccess(false);
-  //     setToolOpened(true);
-  //   }
+  // function handleLogIn({ password, email }) {
+  //   AuthX.login(password, email)
+  //     .then((res) => {
+  //       localStorage.setItem("jwt", JSON.stringify(res.token));
+  //       console.log(localStorage.getItem("jwt"));
+  //       setEmail(email);
+  //       setLoggedIn(true);
+  //     })
+  //     .then(() => {
+  //       setSuccess(true);
+  //       setToolOpened(true);
+  //     })
+  //     .then(() => {
+  //       history.push("/");
+  //     })
+  //     .then(() => {
+  //       setTimeout(() => {
+  //         // setLoggedIn(true);
+  //         // history.push("/");
+  //         setToolOpened(false);
+  //       }, 1000);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setSuccess(false);
+  //       setToolOpened(true);
+  //     });
   // }
+
+  async function handleLogIn({ password, email }) {
+    try {
+      const res = await AuthX.login(password, email);
+      localStorage.setItem("jwt", JSON.stringify(res.token));
+      setEmail(email);
+      setLoggedIn(true);
+      await Promise.all([ApiX.getInitialCards(), ApiX.getUser()]).then(
+        ([itemsApi, userData]) => {
+          setCurrentUser(userData.data);
+          setCards(itemsApi.data);
+        }
+      );
+      history.push("/");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSuccess(true);
+      setToolOpened(true);
+    } catch (err) {
+      console.log(err);
+      setSuccess(false);
+      setToolOpened(true);
+    }
+  }
 
   function handleRegister({ password, email }) {
     AuthX.register(password, email)
